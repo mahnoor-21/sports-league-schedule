@@ -1,0 +1,163 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Sports League Scheduler</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-calendar-alt"></i>
+                <h1>League Scheduler</h1>
+            </div>
+            <ul class="nav-items">
+                <li class="active" data-section="setup">
+                    <i class="fas fa-cog"></i> Setup
+                </li>
+                <li data-section="schedule">
+                    <i class="fas fa-calendar"></i> Schedule
+                </li>
+                <li data-section="analytics">
+                    <i class="fas fa-chart-bar"></i> Analytics
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <section id="setup" class="active">
+                <div class="setup-grid">
+                    <div class="setup-card">
+                        <h2><i class="fas fa-users"></i> Teams</h2>
+                        <div class="input-group">
+                            <input type="text" id="team-name" placeholder="Team name">
+                            <input type="number" id="team-strength" placeholder="Team strength (1-10)">
+                            <button onclick="addTeam()" class="add-btn">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                        <div id="teams-list" class="items-list"></div>
+                    </div>
+
+                    <div class="setup-card">
+                        <h2><i class="fas fa-map-marker-alt"></i> Venues</h2>
+                        <div class="input-group">
+                            <input type="text" id="venue-name" placeholder="Venue name">
+                            <input type="number" id="venue-capacity" placeholder="Capacity">
+                            <button onclick="addVenue()" class="add-btn">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                        <div id="venues-list" class="items-list"></div>
+                    </div>
+
+                    <div class="setup-card">
+                        <h2><i class="fas fa-user-tie"></i> Referees</h2>
+                        <div class="input-group">
+                            <input type="text" id="referee-name" placeholder="Referee name">
+                            <select id="referee-level">
+                                <option value="1">Level 1</option>
+                                <option value="2">Level 2</option>
+                                <option value="3">Level 3</option>
+                            </select>
+                            <button onclick="addReferee()" class="add-btn">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                        <div id="referees-list" class="items-list"></div>
+                    </div>
+
+                    <div class="setup-card">
+                        <h2><i class="fas fa-clock"></i> Time Slots</h2>
+                        <div class="input-group">
+                            <input type="date" id="slot-date">
+                            <input type="time" id="slot-time">
+                            <button onclick="addTimeSlot()" class="add-btn">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                        <div id="slots-list" class="items-list"></div>
+                    </div>
+                </div>
+
+                <button onclick="generateSchedule()" class="generate-btn">
+                    <i class="fas fa-magic"></i> Generate Schedule
+                </button>
+            </section>
+
+            <section id="schedule" class="hidden">
+                <div class="schedule-controls">
+                    <div class="view-toggle">
+                        <button class="active" data-view="calendar">
+                            <i class="fas fa-calendar-alt"></i> Calendar
+                        </button>
+                        <button data-view="list">
+                            <i class="fas fa-list"></i> List
+                        </button>
+                    </div>
+                    <div class="filter-controls">
+                        <select id="team-filter">
+                            <option value="">All Teams</option>
+                            <select id="venue-filter">
+                                <option value="">All Venues</option>
+                            </select>
+                            <input type="date" id="date-filter">
+                        </div>
+                    </div>
+    
+                    <div id="schedule-container" class="schedule-view calendar-view"></div>
+                    
+                    <div class="analytics-panel">
+                        <div class="stat-card">
+                            <h3>Schedule Quality</h3>
+                            <div id="quality-score"></div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Balance</h3>
+                            <div id="balance-score"></div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Constraints Met</h3>
+                            <div id="constraints-score"></div>
+                        </div>
+                    </div>
+                </section>
+    
+                <section id="analytics" class="hidden">
+                    <div class="analytics-grid">
+                        <div class="chart-card">
+                            <h3>Team Distribution</h3>
+                            <canvas id="team-distribution-chart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Venue Usage</h3>
+                            <canvas id="venue-usage-chart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Schedule Metrics</h3>
+                            <canvas id="schedule-metrics-chart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Optimization Progress</h3>
+                            <canvas id="optimization-progress-chart"></canvas>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    
+        <div id="loading-overlay" class="hidden">
+            <div class="loader">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Generating optimal schedule...</p>
+            </div>
+        </div>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </body>
+    </html>
